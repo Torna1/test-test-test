@@ -123,6 +123,8 @@ window.board_manager = {
                 board_type: board_type
             });
         }
+        var index = this.current_boards.indexOf(board_type);
+        this.current_boards.splice(index, 1);
         jQuery('#tab_'+board_type).remove(); // deleting board tab
         jQuery('#board_'+board_type).remove(); // deleting board containter
         if(jQuery('.active_learn_tab').length == 0) {
@@ -217,13 +219,20 @@ window.board_manager = {
                     boards_data.programming = window.wb3.getAllContents();
                     break;
                 case 'languages':
-                    //                    boards_data.languages = window.wb3.getAllContents();
+                    boards_data.languages = window.wb2.getAllContents();
                     break;
                 case 'draw':
                     boards_data.draw = window.learn_draw.getAllContents();
                     break;
                 case 'presentation':
                     boards_data.presentation = window.wb4.getAllContents();
+                    break;
+                case 'tests':
+                    if(this.is_teacher) {
+                        boards_data.tests = window.wb5_teacher.getAllContents();
+                    } else {
+                        boards_data.tests = window.wb5.getAllContents();
+                    }
                     break;
             }
         }
@@ -233,9 +242,15 @@ window.board_manager = {
     setBoardsContent: function(data) {
         console.log('Boards loaded from FRIEND');
         jQuery('#loading').show();
+        
+        var tab_names = { languages: 'Languages', presentation: 'Presentation', programming: 'Programming', tests: 'Tests' }
+        
+        for (var board_type in data.current_content) {
+            this.addBoard(board_type, tab_names[board_type], 'history');
+        }
+        
         // programming board
         if(data.current_content.hasOwnProperty('programming')) {
-            this.addBoard('programming', 'Programming', 'history');
             window.wb3.createBoardFromHistory(data.current_content.programming);
         }
         
@@ -244,10 +259,23 @@ window.board_manager = {
             window.learn_draw.createBoardFromHistory(data.current_content.draw);
         }
         
+        // languages board
+        if(data.current_content.hasOwnProperty('languages')) {
+            window.wb2.createBoardFromHistory(data.current_content.languages);
+        }
+        
         // presentation board
         if(data.current_content.hasOwnProperty('presentation')) {
-            this.addBoard('presentation', 'Presentation', 'history');
             window.wb4.createBoardFromHistory(data.current_content.presentation);
+        }
+        
+        // tests board
+        if(data.current_content.hasOwnProperty('tests')) {
+            if(this.is_teacher) {
+                window.socket_object.emit('test_data_for_teacher');
+            } else {
+                window.socket_object.emit('test_data_for_student');
+            }
         }
         
         // add more boards here
@@ -295,7 +323,7 @@ window.board_manager = {
             data: "todo=delete_file&file_name="+file_name,
             type: "get",
             beforeSend: function() {
-            // loadior here
+                // loadior here
             },
             success: function() {
                 window.wb3.deleteTab(file_name.replace(/\./g, ''));
@@ -339,9 +367,7 @@ window.board_manager = {
         } else if(type == 'error') {
             func = jError;
         }
-        func(
-            message,
-            {
+        func(message, {
                 autoHide : true, // added in v2.0
                 clickOverlay : false, // added in v2.0
                 MinWidth : 250,

@@ -178,23 +178,19 @@ window.wb5 = {
         var unique_id = '';
         for (var i = 0; i < cnt_tabs; i++) {
             unique_id = this.current_tabs[i].toString();
-            if(this.deleted_tabs.indexOf(unique_id) != -1) {
-                continue;
-            }
             contents_object = new Object();
-            contents_object.tab_name = jQuery('#file_name_'+unique_id).html();
-            contents_object.tab_language = jQuery('#programming_language_'+unique_id).val();
-            contents_object.mime = jQuery('#programming_language_'+unique_id+' option:selected').attr('data-mime');
             contents_object.unique_id = unique_id;
-            if (this.editors_list[unique_id] !== undefined) {
-                contents_object.editor_content = this.editors_list[unique_id].getValue();
-            } else {
-                contents_object.editor_content = null;
-            }
+            contents_object.test_status = jQuery('#board_item_'+unique_id+' .set_test_finished:checked').val();
             final_result.push(contents_object);
         }
         
         return final_result;
+    },
+    // this student is in refresh, teacher have resent tests
+    setTestsFromTeacher: function(data, caller) {
+        for (var test_hash in data) {
+            this.createTeacherTest(test_hash, data[test_hash], 'history');
+        }
     },
     createBoardFromHistory: function(data) {
         // store editor data
@@ -212,63 +208,6 @@ window.wb5 = {
         }
         
     },
-    applyHighlighterChange: function(data) {
-        //        console.log('Received object: ', data);
-        var zone_id = data.zone_id;
-        var text = '';
-        for (var i = 0; i < data.change_obj.text.length; i++) {
-            this.is_changed_from_socket = true;
-            var from = data.change_obj.from;
-            var to = data.change_obj.to;
-            var origin = data.change_obj.origin;
-            if(data.change_obj.origin == 'delete' && text == '') {
-                
-            } else if(data.change_obj.origin == 'undo') {
-                if(data.change_obj.text[i] == '') {
-                    text += "\n";
-                } else {
-                    text += data.change_obj.text[i];
-                }
-                if(data.change_obj.text.length > 1 && i<data.change_obj.text.length-1) { // the there are multiple lines add \n but not to last line
-                    text += "\n";
-                }
-            } else if(data.change_obj.origin == 'input') {
-                if(data.change_obj.text[i] == '') {
-                    if(from.ch == to.ch && from.ch == to.ch) {
-                        text += "\n";
-                    }
-                } else {
-                    text += data.change_obj.text[i];
-                }
-                if(data.change_obj.hasOwnProperty('next')) {
-                    text += data.change_obj.next.text[0];
-                    break;
-                }
-            } else if(data.change_obj.origin == 'paste') {
-                if(data.change_obj.text[i] == '') {
-                    text += "\n";
-                } else {
-                    text += data.change_obj.text[i];
-                    if((data.change_obj.text.length > 1 || data.change_obj.cnt_text > 1) && i!=data.change_obj.cnt_text-1) {
-                        text += "\n";
-                    }
-                }
-            } else if(text == '') {
-                text = "\n";
-                if(data.change_obj.hasOwnProperty('next')) {
-                    text += data.change_obj.next.text[0];
-                }
-            }
-        }
-        
-        if(data.change_obj.origin != 'paste') {
-            text = text.replace(/([\r\n])+/gm,"\n");
-        }
-        //        console.log(this.editors_list[zone_id]);
-        this.editors_list[zone_id].replaceRange(text, from, to, origin);
-        text = '';
-        this.is_changed_from_socket = false;
-    }, 
     applyRedrawBoard: function(data) {
         console.log('Boards loaded from HISTORY');
         this.refresh_history = data;
@@ -309,6 +248,5 @@ window.wb5 = {
         while(this.current_tabs.length) {
             this.deleteTab(this.current_tabs[0], 'redraw');
         }
-        this.deleted_tabs = [];
     }
 }

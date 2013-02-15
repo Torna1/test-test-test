@@ -20,7 +20,7 @@ window.socket_object = {
         this.socket_data.on('refresh_status_request', function(data) {
             this.emit('refresh_status_response', {
                 refresh_status: window.board_manager.is_refresh
-                });
+            });
         });
         
         // server is asking for content needed for a client that has refreshed or just entered
@@ -49,6 +49,29 @@ window.socket_object = {
         // list of users
         this.socket_data.on('friend_list', function(data) {
             window.board_manager.createUserList(data);
+        });
+        
+        // teacher asks for tests
+        this.socket_data.on('get_student_tests', function() {
+            window.socket_object.emit('student_tests_for_teacher', { data: window.wb5.getAllContents() });
+        });
+        
+        // teacher receives test from student (teacher is in refresh)
+        this.socket_data.on('student_refresh_test', function(data) {
+            for (var i = 0; i < data.data.data.length; i++) {
+                console.log('mda');
+                window.wb5_teacher.createTeacherTest(data.data.data[i].unique_id, data.student_data, 'history', data.data.data[i].test_status);
+            }
+        });
+        
+        // teacher is asked by student to give his tests
+        this.socket_data.on('get_teacher_student_tests', function(data) {
+            window.socket_object.emit('', { data: window.wb5_teacher.getStudentTests(data) });
+        });
+        
+        // teacher sends to a refresh student his tests
+        this.socket_data.on('get_teacher_student_tests', function(data) {
+            window.wb5.setTestsFromTeacher(data, 'history');
         });
         
         /******** SYNC *********/
