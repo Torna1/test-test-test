@@ -1,0 +1,24 @@
+{% if app.session.hasFlash('message_comment_form') %}
+    <div class="alert alert-success">
+        {{ app.session.flash('message_comment_form')|raw }}
+    </div>
+{% endif %}
+{% if app.session.hasFlash('error_comment_form') %}
+    <div class="alert alert-error">
+        {{ app.session.flash('error_comment_form')|raw }}
+    </div>
+{% endif %}
+
+<form method="post" action="{{ path('comments_form') }}" {{ form_enctype(form) }}>
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_errors(form.comment) }}
+        {{ form_label(form.comment) }}
+        {{ form_widget(form.comment) }}
+    </div>
+
+    {{ form_rest(form) }}
+
+    <input type="submit" value="Comment" class="btn btn-success" />
+</form>

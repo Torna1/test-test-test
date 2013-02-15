@@ -1,0 +1,26 @@
+Front\FrontBundle\Entity\RequestedCourses:
+  type: entity
+  table: requested_courses
+  repositoryClass: Front\FrontBundle\Repository\RequestedCoursesRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    isActivated:
+      type: integer
+      unsigned: false
+      nullable: false
+      column: is_activated
+    isDeleted:
+      type: integer
+      unsigned: false
+      nullable: false
+      column: is_deleted
+    added:
+      type: datetime
+      nullable: false
+  lifecycleCallbacks: {  }

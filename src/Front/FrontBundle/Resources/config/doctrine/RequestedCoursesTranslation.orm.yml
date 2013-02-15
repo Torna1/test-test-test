@@ -1,0 +1,35 @@
+Front\FrontBundle\Entity\RequestedCoursesTranslation:
+  type: entity
+  table: requested_courses_translation
+  repositoryClass: Front\FrontBundle\Repository\RequestedCoursesTranslationRepository
+  fields:
+    language:
+      id: true
+      type: string
+      length: 4
+      fixed: false
+      nullable: false
+      column: language
+    courseName:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: course_name
+    courseDetails:
+      type: string
+      length: 255
+      fixed: false
+      nullable: true
+      column: course_details
+  oneToOne:
+    requestedCourses:
+      targetEntity: RequestedCourses
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        requested_courses_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

@@ -1,0 +1,43 @@
+{% extends '::base.html.twig' %}
+{% block title %}{% endblock %}
+{% block keywords %}{% endblock %}
+{% block description %}{% endblock %}
+
+{% block body %}
+    <script type="text/javascript">
+        requested_course_vote_url = '{{ path('requested_courses_vote')}}';
+    </script>
+    <h3>Requested course details</h3>
+    <a href="{{ path('requested_courses') }}" class="btn btn-success">Back to list</a>
+    <a href="javascript:void(0);" class="btn btn-info" onclick="requestedCoursesVote({{ course.id }});"><i class="icon-thumbs-up"></i> Vote</a>
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>
+                Course name:
+            </th>
+            <td>
+                {{ course.course_name}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Details:
+            </th>
+            <td>
+                {{ course.course_details}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Votes
+            </th>
+            <td class="votes-{{ course.id }}">
+                {{ course.votes}}
+            </td>
+        </tr>
+    </table>
+    <br />
+    {% render url('comments_form') %}
+    {% render url('comments_list', { 'url': app.request.uri}) %}
+{% endblock %}

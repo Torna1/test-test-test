@@ -1,0 +1,11 @@
+Front\FrontBundle\Entity\RequestedCoursesTranslation:
+    properties:
+        courseName:
+            - NotBlank: ~
+        courseDetails:
+            - NotBlank: ~
+            
+Front\FrontBundle\Entity\Comments:
+    properties:
+        comment:
+            - NotBlank: ~

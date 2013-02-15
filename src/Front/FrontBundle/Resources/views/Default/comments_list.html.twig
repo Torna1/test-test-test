@@ -1,0 +1,15 @@
+{% for comment in comments %}
+    <div class="alert">
+    <h6>
+        {% if comment.is_teacher == 0 %}
+            {{ comment.student }}
+        {% else %}
+            {{ comment.teacher }}
+        {% endif %}
+    </h6>
+         {{ comment.added_at|date("d.m.Y") }}   
+    <br />
+    {{ comment.comment }}
+    </div>
+{% endfor %}
+

@@ -1,0 +1,41 @@
+{% extends '::base.html.twig' %}
+{% block title %}{% endblock %}
+{% block keywords %}{% endblock %}
+{% block description %}{% endblock %}
+
+{% block body %}
+    <script type="text/javascript">
+        requested_course_vote_url = '{{ path('requested_courses_vote')}}';
+    </script>
+    <h3>Requested course list</h3>
+    <a href="{{ path('requested_courses_add_form') }}" class="btn btn-success">Request a course</a>
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>
+                Object name
+            </th>
+            <th>
+                Votes
+            </th>
+            <th>
+                &nbsp;
+            </th>            
+        </tr>
+        {% for item in course_list %}
+            <tr>
+                <td>
+                    {{ item.course_name }}
+                </td>
+                <td class="votes-{{ item.id }}">
+                    {{ item.votes }}
+                </td>
+                <td>
+                    <a href="{{ path('requested_courses_details', {'id' : item.id}) }}" class="btn btn-info"><i class="icon-circle-arrow-right"></i> Details</a>
+                    <a href="javascript:void(0);" class="btn btn-info" onclick="requestedCoursesVote({{ item.id }});"><i class="icon-thumbs-up"></i> Vote</a>
+                    
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

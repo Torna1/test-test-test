@@ -1,0 +1,43 @@
+Front\FrontBundle\Entity\Comments:
+    type: entity
+    table: comments
+    repositoryClass: Front\FrontBundle\Repository\CommentsRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        userId:
+            type: string
+            length: 45
+            fixed: false
+            nullable: false
+            column: user_id
+        url:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        comment:
+            type: text
+            nullable: false
+        addedAt:
+            type: datetime
+            nullable: false
+            column: added_at
+        isTeacher:
+            type: boolean
+            nullable: false
+            column: is_teacher
+        isActivated:
+            type: boolean
+            nullable: false
+            column: is_activated
+        isDeleted:
+            type: boolean
+            nullable: false
+            column: is_deleted
+    lifecycleCallbacks: {  }

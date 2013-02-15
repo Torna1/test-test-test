@@ -140,3 +140,26 @@ account_teacher_texts:
   pattern: /teacher-text-list
   defaults: { _controller: FrontFrontBundle:Tests:teacherTexts }
 
+#requested courses
+requested_courses:
+  pattern: /requested-courses
+  defaults: { _controller: FrontFrontBundle:RequestedCourses:index }
+requested_courses_add_form:
+  pattern: /requested-courses/new
+  defaults: { _controller: FrontFrontBundle:RequestedCourses:new }
+requested_courses_vote:
+  pattern: /requested-courses/vote
+  defaults: { _controller: FrontFrontBundle:RequestedCourses:vote }
+requested_courses_details:
+  pattern: /requested-courses/{id}
+  defaults: { _controller: FrontFrontBundle:RequestedCourses:details }
+  
+# comments
+comments_form:
+  pattern: /comments-form
+  defaults: { _controller: FrontFrontBundle:RequestedCourses:commentsForm }
+comments_list:
+  pattern: /comments-list/{url}
+  defaults: { _controller: FrontFrontBundle:RequestedCourses:commentsList }
+  requirements:
+      url: ".+"

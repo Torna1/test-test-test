@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="../css/jquery.validation.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block body %}
+<form action="{{ path('requested_courses_add_form') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+    <input type="submit" />
+</form>
+{% endblock %}
