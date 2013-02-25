@@ -59,18 +59,17 @@ window.socket_object = {
         // teacher receives test from student (teacher is in refresh)
         this.socket_data.on('student_refresh_test', function(data) {
             for (var i = 0; i < data.data.data.length; i++) {
-                console.log('mda');
                 window.wb5_teacher.createTeacherTest(data.data.data[i].unique_id, data.student_data, 'history', data.data.data[i].test_status);
             }
         });
         
         // teacher is asked by student to give his tests
         this.socket_data.on('get_teacher_student_tests', function(data) {
-            window.socket_object.emit('', { data: window.wb5_teacher.getStudentTests(data) });
+            window.socket_object.emit('refresh_student_test', { data: window.wb5_teacher.getStudentTests(data) });
         });
         
         // teacher sends to a refresh student his tests
-        this.socket_data.on('get_teacher_student_tests', function(data) {
+        this.socket_data.on('student_tests_from_teacher', function(data) {
             window.wb5.setTestsFromTeacher(data, 'history');
         });
         
@@ -251,6 +250,7 @@ window.socket_object = {
         
         // teacher sent test
         this.socket_data.on('test_from_teacher', function(data) {
+            console.log('ffffsfsfsdfsdf');
             window.wb5.createTeacherTest(data.test, data.test_name, 'socket');
         });
         

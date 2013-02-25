@@ -34,8 +34,8 @@ window.client_drawer = {
             d += data.coord;
             path.setAttributeNS(null, 'd', d);
             this.drawCursor({
-                x:data.x+window.learn_draw.svg_left - 10, 
-                y:data.y+window.learn_draw.svg_top - 10, 
+                x:data.x+window.learn_draw.svg_left, 
+                y:data.y+window.learn_draw.svg_top, 
                 id: 'curs_'+data.id,
                 tab_id: data.tab_id
             }); // show cursor while drawing

@@ -157,8 +157,6 @@ window.wb2 = {
         return final_result;
     },
     createBoardFromHistory: function(data) {
-        console.log('data:');
-        console.log(data);
         // create tabs, editors
         for (var i = 0; i < data.length; i++) {
             this.createTab(data[i].unique_id, data[i].tab_name, 'history');

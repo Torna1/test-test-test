@@ -16,6 +16,7 @@ window.wb5 = {
     
     createTeacherTest: function(test, test_name, caller) {
         var unique_id = test;
+        console.log('create student test tab');
         if(jQuery('#file_name_'+unique_id).length > 0) {
             return false;
         }

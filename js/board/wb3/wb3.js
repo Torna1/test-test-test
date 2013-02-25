@@ -164,7 +164,9 @@ window.wb3 = {
     },
     bindLanguageSwitcher: function(chosen_language, mime, zone_id, caller) {
         if(caller === 'socket' || caller === 'history') { // if caller!='socket' send socket
-            window.wb3.createHighlighter(chosen_language, mime, zone_id, caller);
+            if(jQuery('#highlighter_textarea_'+zone_id).length) {
+                window.wb3.createHighlighter(chosen_language, mime, zone_id, caller);
+            }
             jQuery('#save_file_wb3_button_'+zone_id).show();
         } else {
             jQuery('.set_language_button').unbind('click'); // unbind click events to avoid event multiplication
@@ -310,6 +312,9 @@ window.wb3 = {
         }
     },
     initHighlighter: function(zone_id, mime, chosen_language, caller) {
+        if(jQuery("#highlighter_textarea_"+zone_id).length == 0) {
+            return;
+        }
         if(this.deleted_tabs.indexOf(zone_id) != -1) { // its a deleted tab
             return;
         }
@@ -512,7 +517,7 @@ window.wb3 = {
                 }
             }
         }
-        
+//        console.log(text);
         if(data.change_obj.origin != 'paste') {
             text = text.replace(/([\r\n])+/gm,"\n");
         }
@@ -532,12 +537,12 @@ window.wb3 = {
         for (var i = 0; i < cnt; i++) {
             main_data = JSON.parse(data[i].main_data);
             switch(data[i].act_name) {
-//                case 'board_create':
-//                    window.board_manager.addBoard(main_data.board_type, main_data.board_name, 'history');
-//                    break;
-//                case 'wb3_board_delete':
-//                    window.board_manager.deleteBoard(main_data.board_type, 'history');
-//                    break;
+                case 'board_create':
+                    window.board_manager.addBoard(main_data.board_type, main_data.board_name, 'history');
+                    break;
+                case 'wb3_board_delete':
+                    window.board_manager.deleteBoard(main_data.board_type, 'history');
+                    break;
                 case 'wb3_tab_create':
                     window.wb3.createTab(data[i].obj_id, main_data.tab_name, 'history', main_data.file_name);
                     break;

@@ -306,10 +306,10 @@ window.learn_draw = {
         getRealCoord: function(event, dimension) {
             var return_data;
             if(dimension == 'x') {
-                return_data = event.clientX - window.learn_draw.svg_left + jQuery(window).scrollLeft() + 10;
+                return_data = event.clientX - window.learn_draw.svg_left + jQuery(window).scrollLeft();
             }
             if(dimension == 'y') {
-                return_data = event.clientY - window.learn_draw.svg_top + jQuery(window).scrollTop() + 10;
+                return_data = event.clientY - window.learn_draw.svg_top + jQuery(window).scrollTop();
             }
             return return_data;
         },

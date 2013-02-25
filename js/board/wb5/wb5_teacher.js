@@ -50,10 +50,12 @@ window.wb5_teacher = {
     createTestTabsAtTeacher: function(test, checked_student) {
         jQuery('#test_modal').modal('hide');
         for (var i = 0; i < checked_student.length; i++) {
+            console.log('createTestTabsAtTeacher');
             this.createTeacherTest(test, window.board_manager.current_users[checked_student[i]]);
         }
     },
     createTeacherTest: function(test, student_data, caller, test_status) {
+        console.log('create teacher tab');
         var unique_id = student_data.hash+'_'+test;
         if(jQuery('#file_name_'+unique_id).length > 0) {
             return false;
@@ -112,7 +114,7 @@ window.wb5_teacher = {
             // generating unique id
             var unique_id = jQuery('#texts_list').val();
             var tab_name = jQuery('#texts_list option:selected').text();
-            window.wb5.createTab(unique_id, tab_name, undefined, 'text');
+            window.wb5_teacher.createTab(unique_id, tab_name, undefined, 'text');
         });
     },
     bindDeleteTabEvent:function(sheet_id, caller) {
@@ -179,6 +181,8 @@ window.wb5_teacher = {
         });
     },
     getStudentTests: function(data) {
+        console.log('student tests');
+        console.log(this.student_tests);
         if(this.student_tests[data.student_hash] !== undefined) {
             var send_obj = {};
             var test_name = '';
@@ -187,6 +191,8 @@ window.wb5_teacher = {
                 test_hash = this.student_tests[data.student_hash][i];
                 send_obj[test_hash] = jQuery('#prepared_tests option[value='+test_hash+']').text();
             }
+            console.log('student tests emit');
+            console.log(send_obj);
             window.socket_object.emit('refresh_student_test', {
                 tests: send_obj,
                 student_hash: data.student_hash
@@ -259,7 +265,8 @@ window.wb5_teacher = {
             contents_object.test_status = jQuery('#board_item_'+unique_id+' .set_test_finished:checked').val();
             final_result.push(contents_object);
         }
-        
+        console.log('sending wb5 teacher');
+        console.log(final_result);
         return final_result;
     },
     createBoardFromHistory: function(data) {
@@ -277,7 +284,7 @@ window.wb5_teacher = {
         
     },
     applyRedrawBoard: function(data) {
-        console.log('Boards loaded from HISTORY');
+        console.log('Boards loaded from HISTORY wb5 teacher');
         this.refresh_history = data;
         var cnt = data.length;
         var main_data = new Array();
